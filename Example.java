@@ -3,7 +3,7 @@ import pure.Lazy;
 import pure.Unit;
 
 
-public class Test {
+public class Example {
     public static <A> IO<Unit> buzz(IO<A> input) {
         // I/O programs are first-order (can be passed to functions)
         IO<Unit> sayBuzz = IO.writeLine("buzz");
@@ -26,9 +26,10 @@ public class Test {
             .then(IO.writeLine("----")
             .then(buzz(script)));
         
-        IO.run(program);
-
-        // Stack-safe infinite recursion. `IO.forever` is data, not a while loop ;)
-        IO.run(IO.forever(IO.writeLine("a")));
+        IO.run(
+            program
+            // Stack-safe infinite recursion. `IO.forever` is data, not a while loop ;)
+            .then(IO.forever(IO.writeLine("a")))
+        );
     }
 }
