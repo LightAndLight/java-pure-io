@@ -17,9 +17,9 @@ public abstract class IO<A> {
         return result.runIO();
     }
 
-    public abstract A runIO();
+    abstract A runIO();
 
-    public boolean isValue() {
+    boolean isValue() {
         return true;
     }
 
@@ -57,7 +57,7 @@ public abstract class IO<A> {
             this.value = value;
         }
 
-        public A runIO() {
+        A runIO() {
             return this.value;
         }
     }
@@ -71,7 +71,7 @@ public abstract class IO<A> {
             this.b = b;
         }
 
-        public B runIO() {
+        B runIO() {
             this.a.runIO();
             return this.b.runIO();
         }
@@ -81,7 +81,7 @@ public abstract class IO<A> {
             return this.b.next();
         }
 
-        public boolean isValue() {
+        boolean isValue() {
             return false;
         }
     }
@@ -95,7 +95,7 @@ public abstract class IO<A> {
             this.b = b;
         }
 
-        public B runIO() {
+        B runIO() {
             this.a.runIO();
             return this.b.force().runIO();
         }
@@ -105,7 +105,7 @@ public abstract class IO<A> {
             return unit -> this.b.force();
         }
 
-        public boolean isValue() {
+        boolean isValue() {
             return false;
         }
     }
@@ -119,7 +119,7 @@ public abstract class IO<A> {
             this.function = function;
         }
 
-        public B runIO() {
+        B runIO() {
             return this.function.apply(this.action.runIO()).runIO();
         }
 
@@ -130,7 +130,7 @@ public abstract class IO<A> {
                 .apply(unit);
         }
 
-        public boolean isValue() {
+        boolean isValue() {
             return false;
         };
     }
@@ -144,7 +144,7 @@ public abstract class IO<A> {
             this.function = function;
         }
 
-        public B runIO() {
+        B runIO() {
             return this.function
                 .apply(this.action.runIO())
                 .force()
@@ -157,14 +157,14 @@ public abstract class IO<A> {
                 .force();
         }
 
-        public boolean isValue() {
+        boolean isValue() {
             return false;
         };
     }
 
     public static IO<String> readLine() {
         return new IO<String>() {
-            public String runIO() {
+            String runIO() {
                 Console c = System.console();
                 return c.readLine();
             }
@@ -173,7 +173,7 @@ public abstract class IO<A> {
 
     public static IO<Unit> writeLine(String s) {
         return new IO<Unit>() {
-            public Unit runIO() {
+            Unit runIO() {
                 Console c = System.console();
                 c.printf(s + "\n");
                 return new Unit();

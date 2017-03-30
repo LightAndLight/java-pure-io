@@ -25,7 +25,7 @@ public class Example {
             script
             .then(IO.writeLine("----")
             .then(buzz(script)));
-        
+
         IO.run(
             program
             // Stack-safe infinite recursion. `IO.forever` is data, not a while loop ;)
